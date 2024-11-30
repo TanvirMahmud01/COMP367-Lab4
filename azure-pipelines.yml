@@ -17,8 +17,8 @@ steps:
 
   - task: NuGetAuthenticate@1
 
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: $(Build.ArtifactStagingDirectory)
-      artifactName: nuget
-      publishLocation: pipeline
+  - script: |
+      dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg \
+        --source "https://pkgs.dev.azure.com/tmahmud/COMP367-Lab4-CI/_packaging/MyNuGetFeed/nuget/v3/index.json" \
+        --api-key $(System.AccessToken)
+    displayName: "Push NuGet Package to Azure Artifacts"
